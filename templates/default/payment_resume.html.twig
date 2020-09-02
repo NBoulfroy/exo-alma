@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="col-xs-1 offset-xs-2 col-sm-6 offset-sm-3 col-md-4 offset-md-4 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title text-center">
+                        <h3>Récapitulatif</h3>
+                    </div>
+                    <div class="card-text text-center" style="margin-top: 5em;">
+                        <p>Montant : {{ app.session.get('order').amount }} €</p>
+                        <p>Consultez vos courriels pour plus de détails.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

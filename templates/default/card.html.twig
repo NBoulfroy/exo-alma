@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="mt-5">
+            <div class="text-center">
+                <h3>Votre panier</h3>
+            </div>
+        </div>
+        <div class="col-xs-1 offset-xs-2 col-sm-3 offset-sm-3 col-md-4 offset-md-4 mt-3">
+        {% if app.session.get('card').quantity() != 0 %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Quantité</th>
+                    <th scope="col">Prix unitaire</th>
+                    <th scope="col">Prix total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Bissa</td>
+                    <td>
+                        <form action="{{ path('card_read') }}" method="POST">
+                            <select id="quantity" name="quantity">
+                                {% for i in 1..10 %}
+                                    <option value="{{ i }}" {% if i == app.session.get('card').quantity() %}selected{% endif %}>{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="hidden" value="20000" name="unitAmount" />
+                        </form>
+                    </td>
+                    <td>45</td>
+                    <td>{{ app.session.get('card').amount() }}</td>
+                </tr>
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-warning">
+                <p class="text-center">Il n'y a aucun produit dans votre panier.</p>
+            </div>
+        {% endif %}
+        </div>
+        <div class="col text-center">
+            <a id="proceedToPay" class="btn btn-primary" href="{{ path('payment_elegibility_read') }}">Procéder au paiement</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#proceedToPay').click(function(event) {
+            let noQuantity = {% if (app.session.get('card').quantity() is null) %} true {% else %} false {% endif %};
+
+            if (noQuantity) {
+                event.preventDefault();
+            }
+        })
+
+        $('#quantity').change(function() {
+            // Checks value to prevent null or negative number.
+            if (0 < this.value) {
+                $('form').submit();
+            }
+        })
+    </script>
+{% endblock %}

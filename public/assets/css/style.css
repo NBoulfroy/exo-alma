@@ -1,0 +1,10 @@
+.carousel-inner > .carousel-item > img {
+    width: auto !important;
+    object-fit: cover;
+    height: 600px;
+    margin: 0 auto;
+}
+
+#paymentEligibility {
+    /*margin-bottom: 10em;*/
+}

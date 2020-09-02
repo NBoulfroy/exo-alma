@@ -1,0 +1,32 @@
+parameters:
+    alma_base_api_url: '%env(ALMA_BASE_API_URL)%'
+    alma_api_key: '%env(ALMA_API_KEY)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    GuzzleHttp\Client:
+        arguments:
+            - {
+#                verify: false
+                base_uri: '%alma_base_api_url%'
+            }
+
+    App\Service\Alma\Alma:
+        arguments:
+            - '@GuzzleHttp\Client'
+            - '%alma_api_key%'
